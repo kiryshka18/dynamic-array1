@@ -4,6 +4,7 @@
 #include <cstddef>
 #include <iostream>
 #include <stdexcept>
+#include <new>
 
 class DynamicArray {
 private:
@@ -18,7 +19,7 @@ private:
 
     void validateValue(int value) const {
         if (value < -100 || value > 100) {
-            throw std::out_of_range("Ошибка: Значение вне допустимого диапазона [-100, 100]!");
+            throw std::invalid_argument("Ошибка: Значение вне допустимого диапазона [-100, 100]!");
         }
     }
 
