@@ -1,31 +1,31 @@
 #include "DynamicArray.h"
 #include <iostream>
+#include <stdexcept>
+#include <new>
 
 int main() {
+    std::cout << "=== Демонстрация исключений (Часть 2) ===" << std::endl;
 
-    DynamicArray arr1(3);
-    arr1.setElement(0, 10);
-    arr1.setElement(1, -50);
-    arr1.setElement(2, 100);
+    try {
+        DynamicArray arr(2);
+        arr.setElement(5, 10);
+    } catch (const std::out_of_range& e) {
+        std::cout << "Перехвачено (out_of_range): " << e.what() << std::endl;
+    }
 
-    std::cout << "arr1: ";
-    arr1.print();
+    try {
+        DynamicArray arr(2);
+        arr.setElement(0, 150);
+    } catch (const std::invalid_argument& e) {
+        std::cout << "Перехвачено (invalid_argument): " << e.what() << std::endl;
+    }
 
-    DynamicArray arr2(arr1);
-    std::cout << "arr2 (копия arr1): ";
-    arr2.print();
-
-    arr1.pushBack(42);
-    std::cout << "arr1 после pushBack(42): ";
-    arr1.print();
-
-    DynamicArray arr3(2);
-    arr3.setElement(0, 5);
-    arr3.setElement(1, 5);
-
-    arr1.add(arr3);
-    std::cout << "arr1 после add(arr3): ";
-    arr1.print();
+    try {
+        size_t hugeSize = static_cast<size_t>(-1);
+        DynamicArray giantArr(hugeSize);
+    } catch (const std::bad_alloc& e) {
+        std::cout << "Перехвачено (bad_alloc): Память не выделена (" << e.what() << ")" << std::endl;
+    }
 
     return 0;
 }
