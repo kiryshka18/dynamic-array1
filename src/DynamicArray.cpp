@@ -1,4 +1,5 @@
 #include "DynamicArray.h"
+#include <new>
 
 void DynamicArray::validateIndex(size_t index) const {
     if (index >= size_) {
@@ -8,12 +9,12 @@ void DynamicArray::validateIndex(size_t index) const {
 
 void DynamicArray::validateValue(int value) const {
     if (value < -100 || value > 100) {
-        throw std::out_of_range("Ошибка: Значение вне допустимого диапазона [-100, 100]!");
+        throw std::invalid_argument("Ошибка: Значение вне допустимого диапазона [-100, 100]!");
     }
 }
 
 DynamicArray::DynamicArray(size_t size) : size_(size) {
-    data_ = new int[size_]{};
+    data_ = new int[size_]{}; 
 }
 
 DynamicArray::~DynamicArray() {
@@ -21,7 +22,7 @@ DynamicArray::~DynamicArray() {
 }
 
 DynamicArray::DynamicArray(const DynamicArray& other) : size_(other.size_) {
-    data_ = new int[size_];
+    data_ = new int[size_]; 
     for (size_t i = 0; i < size_; ++i) {
         data_[i] = other.data_[i];
     }
@@ -52,7 +53,7 @@ int DynamicArray::getElement(size_t index) const {
 
 void DynamicArray::pushBack(int value) {
     validateValue(value);
-    int* newData = new int[size_ + 1];
+    int* newData = new int[size_ + 1]; 
     for (size_t i = 0; i < size_; ++i) {
         newData[i] = data_[i];
     }
