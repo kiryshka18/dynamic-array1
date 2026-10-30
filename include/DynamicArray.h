@@ -100,6 +100,71 @@ public:
         }
     }
 
+    T& operator[](size_t index) {
+        validateIndex(index);
+        return data_[index];
+    }
+
+    const T& operator[](size_t index) const {
+        validateIndex(index);
+        return data_[index];
+    }
+
+    bool operator==(const DynamicArray& other) const {
+        if (size_ != other.size_) return false;
+        for (size_t i = 0; i < size_; ++i) {
+            if (data_[i] != other.data_[i]) return false;
+        }
+        return true;
+    }
+
+    bool operator!=(const DynamicArray& other) const {
+        return !(*this == other);
+    }
+
+    DynamicArray& operator+=(const DynamicArray& other) {
+        for (size_t i = 0; i < size_; ++i) {
+            T otherVal = (i < other.size_) ? other.data_[i] : T{};
+            T res = data_[i] + otherVal;
+            validateValue(res);
+            data_[i] = res;
+        }
+        return *this;
+    }
+
+    DynamicArray& operator-=(const DynamicArray& other) {
+        for (size_t i = 0; i < size_; ++i) {
+            T otherVal = (i < other.size_) ? other.data_[i] : T{};
+            T res = data_[i] - otherVal;
+            validateValue(res);
+            data_[i] = res;
+        }
+        return *this;
+    }
+
+    DynamicArray& operator+=(const T& scalar) {
+        for (size_t i = 0; i < size_; ++i) {
+            T res = data_[i] + scalar;
+            validateValue(res);
+            data_[i] = res;
+        }
+        return *this;
+    }
+
+    DynamicArray& operator-=(const T& scalar) {
+        for (size_t i = 0; i < size_; ++i) {
+            T res = data_[i] - scalar;
+            validateValue(res);
+            data_[i] = res;
+        }
+        return *this;
+    }
+
+    T* begin() { return data_; }
+    T* end() { return data_ + size_; }
+    const T* begin() const { return data_; }
+    const T* end() const { return data_ + size_; }
+
     friend std::ostream& operator<<(std::ostream& os, const DynamicArray<T>& arr) {
         os << "[ ";
         for (size_t i = 0; i < arr.size_; ++i) {
