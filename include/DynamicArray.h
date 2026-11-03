@@ -8,6 +8,7 @@
 #include <type_traits>
 #include <cmath>
 #include <typeinfo>
+#include <utility>
 
 template <typename T>
 class DynamicArray {
@@ -43,6 +44,33 @@ public:
         for (size_t i = 0; i < size_; ++i) {
             data_[i] = other.data_[i];
         }
+    }
+
+    DynamicArray& operator=(const DynamicArray& other) {
+        if (this == &other) return *this;
+        delete[] data_;
+        size_ = other.size_;
+        data_ = new T[size_];
+        for (size_t i = 0; i < size_; ++i) {
+            data_[i] = other.data_[i];
+        }
+        return *this;
+    }
+
+    DynamicArray(DynamicArray&& other) noexcept 
+        : data_(other.data_), size_(other.size_) {
+        other.data_ = nullptr;
+        other.size_ = 0;
+    }
+
+    DynamicArray& operator=(DynamicArray&& other) noexcept {
+        if (this == &other) return *this;
+        delete[] data_;
+        data_ = other.data_;
+        size_ = other.size_;
+        other.data_ = nullptr;
+        other.size_ = 0;
+        return *this;
     }
 
     size_t getSize() const { return size_; }
